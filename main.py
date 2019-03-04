@@ -28,7 +28,7 @@ def scraper(profile, start, posts, username, passwd):
             print(imgUrl)
             time.sleep(delay)
 
-    print ("Scraped " + str(posts) + "(" + str(start) + "," + str(start + posts - 1) + ") posts from " + profile)
+    print ("Scraped " + str(posts) + "(Post no. " + str(start) + ", Post no. " + str(start + posts - 1) + ") posts from " + profile)
 
 username = input("Enter your username: ")
 passwd = getpass("Enter your password: ")
@@ -36,8 +36,8 @@ delay = int(input("Enter the time interval(in seconds) between the successive po
 tags = input("Add a list of tags to be used for posts: ").replace(" ", "").split("#")
 while(True):
     handle = input("Enter insta profile username: ")
-    start = int(input("Enter starting post number by" + handle + "you want to download: "))
-    posts = int(input("Enter number of posts by" + handle + "you want to download: "))
+    start = int(input("Enter starting post number by " + handle + " you want to download: "))
+    posts = int(input("Enter number of posts by " + handle + " you want to download: "))
     insta_profiles.append((handle, start, posts))
     cont = input("Do you wish to add more profiles?(Yes/No)\n")
     if cont[0] == 'N' or cont[0] == 'n':
@@ -45,4 +45,3 @@ while(True):
 
 for profile, start, posts in insta_profiles:
     scraper(profile, start, posts, username, passwd)
-    time.sleep(delay)

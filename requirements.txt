@@ -1,0 +1,2 @@
+instagram-scraper
+instapy-cli

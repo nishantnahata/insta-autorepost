@@ -9,9 +9,6 @@ insta_profiles = []
 delay = 5
 
 def scraper(profile, start, posts, username, passwd):
-    profilepath = os.path.join(os.getcwd(), profile)
-    if os.path.exists(profilepath):
-        shutil.rmtree(profilepath)
     imgScraper = insta.InstagramScraper(usernames=[profile], login_user=username, login_pass=passwd, maximum=start + posts - 1, media_metadata=True, latest=True,media_types=['image'])
     imgScraper.scrape()
     # Take last json image data and post in instagram images,  tags and decription
@@ -21,10 +18,21 @@ def scraper(profile, start, posts, username, passwd):
         for pic in pics:
             newstr = (pic["display_url"])
             imgUrl = newstr.split('?')[0].split('/')[-1]
+            cap = None
+            try:
+                cap = pic["edge_media_to_caption"]["edges"][-1]["node"]["text"] + '\n'
+                if caption is False:
+                    cap = ""
+                else:
+                    print("Caption: " + cap)
+            except:
+                cap = ""
+                print("No caption exists.")
             random.shuffle(tags)
             #Execute Instagram users with instapy. Excecute list insta_profiles
             tagString = "#" + " #".join(tags[:min(30, len(tags)) - 1])
-            call('instapy -u ' + username + ' -p ' + passwd + ' -f ./' + profile + '/' + imgUrl +' -t "' + tagString + '"', shell=True)
+            call('instapy -u ' + username + ' -p ' + passwd + ' -f ./' + profile + '/' + imgUrl +' -t "' 
+                + cap + tagString + '"', shell=True)
             print(imgUrl)
             time.sleep(delay)
 
@@ -34,6 +42,9 @@ username = input("Enter your username: ")
 passwd = getpass("Enter your password: ")
 delay = int(input("Enter the time interval(in seconds) between the successive posts: "))
 tags = input("Add a list of tags to be used for posts: ").replace(" ", "").split("#")
+cvalue = input("Do you want to repost with the caption?(Yes/No) ")
+caption = (cvalue[0] == 'Y' or cvalue[0] == 'y')
+
 while(True):
     handle = input("Enter insta profile username: ")
     start = int(input("Enter starting post number by " + handle + " you want to download: "))
@@ -45,3 +56,6 @@ while(True):
 
 for profile, start, posts in insta_profiles:
     scraper(profile, start, posts, username, passwd)
+    profilepath = os.path.join(os.getcwd(), profile)
+    if os.path.exists(profilepath):
+        shutil.rmtree(profilepath)

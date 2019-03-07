@@ -46,7 +46,7 @@ cvalue = input("Do you want to repost with the caption?(Yes/No) ")
 caption = (cvalue[0] == 'Y' or cvalue[0] == 'y')
 
 while(True):
-    handle = input("Enter insta profile username: ")
+    handle = input("Enter insta profile name: ")
     start = int(input("Enter starting post number by " + handle + " you want to download: "))
     posts = int(input("Enter number of posts by " + handle + " you want to download: "))
     insta_profiles.append((handle, start, posts))
